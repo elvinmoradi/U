@@ -556,8 +556,10 @@ async function submitOrder(ev){
   try{
     const {data,error}=await sb.rpc('create_order',{p_user_id:uid,p_product_id:p.id,p_expected_price:p.price});
     if(error) throw error;
+    const row=Array.isArray(data)?data[0]:data;
+    if(!row) throw new Error('EMPTY_RESULT');
     try{localStorage.setItem('arian_uid',uid)}catch(e){}
-    state.busy=false; renderSuccess(data); toast('سفارش شما ثبت شد.','success'); loadProducts(false);
+    state.busy=false; renderSuccess(row); toast('سفارش شما ثبت شد.','success'); loadProducts(false);
   }catch(e){
     state.busy=false;
     const msg=orderError(e);
@@ -574,6 +576,7 @@ async function submitOrder(ev){
   }
 }
 function renderSuccess(o){
+  state.lastOrder=o;
   const card=String(o.card_number||'').replace(/\s+/g,'');
   const shown=card.replace(/(\d{4})(?=\d)/g,'$1 ');
   dlgBody.innerHTML=
@@ -590,7 +593,44 @@ function renderSuccess(o){
     (card?'<button class="btn btn-primary" type="button" data-copy="'+esc(card)+'">کپی شماره کارت</button>':
       '<p class="note">شماره کارت هنوز ثبت نشده است. لطفاً با مدیریت در روبیکا تماس بگیرید.</p>')+
     '<p class="note">پس از واریز، سفارش توسط مدیریت بررسی و تکمیل می‌شود.</p>'+
+    (o.order_id?receiptBoxHtml():'')+
     '<button class="btn btn-ghost" type="button" data-close>بستن</button>';
+}
+function receiptBoxHtml(){
+  return '<div class="field" id="receiptBox" style="margin-top:4px">'+
+    '<label for="receiptFile">عکس رسید واریز (اختیاری)</label>'+
+    '<input type="file" id="receiptFile" class="inp" style="padding:8px" accept="image/png,image/jpeg,image/webp">'+
+    '<p class="err" id="receiptErr" role="alert"></p>'+
+    '<button class="btn btn-ghost" id="receiptBtn" type="button" style="width:100%;margin-top:6px"><span class="spin"></span><span class="lbl">آپلود رسید</span></button>'+
+  '</div>';
+}
+async function uploadReceipt(){
+  const o=state.lastOrder; if(!o||!o.order_id) return;
+  const btn=$('#receiptBtn'), err=$('#receiptErr'), inp=$('#receiptFile');
+  if(!btn||!inp) return;
+  err.textContent='';
+  const file=inp.files&&inp.files[0];
+  if(!file){err.textContent='یک تصویر انتخاب کنید.';return}
+  if(!/^image\/(png|jpeg|webp)$/.test(file.type)){err.textContent='فقط تصویر PNG، JPG یا WEBP مجاز است.';return}
+  if(file.size>5*1024*1024){err.textContent='حجم تصویر نباید بیشتر از ۵ مگابایت باشد.';return}
+  if(!sb){err.textContent=NET_MSG;return}
+  btn.disabled=true; btn.classList.add('loading'); $('.lbl',btn).textContent='در حال آپلود…';
+  try{
+    const ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
+    const path=o.order_id+'/'+Date.now()+'-'+Math.random().toString(36).slice(2)+'.'+ext;
+    const up=await sb.storage.from('receipts').upload(path,file,{cacheControl:'3600',upsert:false});
+    if(up.error) throw up.error;
+    const pub=sb.storage.from('receipts').getPublicUrl(path);
+    const {error:rpcErr}=await sb.rpc('attach_order_receipt',{p_order_id:o.order_id,p_user_id:o.user_id,p_receipt_url:pub.data.publicUrl});
+    if(rpcErr) throw rpcErr;
+    const box=$('#receiptBox'); if(box) box.innerHTML='<p class="note">✅ رسید با موفقیت ثبت شد. ممنون از خرید شما.</p>';
+    toast('رسید واریز ثبت شد.','success');
+  }catch(e){
+    const m=isNet(e)?NET_MSG:/ATTACH_FAILED/.test(String(e&&e.message))?'این سفارش قبلاً رسید دریافت کرده است.':'آپلود رسید انجام نشد. دوباره تلاش کنید.';
+    err.textContent=m; toast(m,'error');
+  }finally{
+    if(btn.isConnected){btn.disabled=false;btn.classList.remove('loading');$('.lbl',btn).textContent='آپلود رسید'}
+  }
 }
 
 /* ================= reviews ================= */
@@ -647,6 +687,7 @@ document.addEventListener('click',e=>{
   if(rt){ const k=rt.dataset.retry; if(k==='products') loadProducts(true); else if(k==='reviews') loadReviews(); return }
   const cp=e.target.closest('[data-copy]');
   if(cp){copyText(cp.dataset.copy).then(()=>toast('شماره کارت کپی شد.','success')).catch(()=>toast('کپی انجام نشد؛ شماره را دستی کپی کنید.','error'));return}
+  if(e.target.closest('#receiptBtn')){uploadReceipt();return}
   if(e.target.closest('[data-close]')) closeDlg();
 });
 dlg.addEventListener('click',e=>{if(e.target===dlg) closeDlg()});
