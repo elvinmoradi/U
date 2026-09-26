@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Arian Shop | فروش سکه و خدمات</title>
+<meta name="description" content="Arian Shop؛ خرید سریع و مطمئن سکه با مدیریت آسان">
+<meta name="theme-color" content="#050A06">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vazirmatn@33.0.3/Vazirmatn-font-face.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/lalezar/index.css">
+<style>
+:root{
+  --bg:#050A06; --bg2:#08110A; --panel:#0C1A10; --panel2:#112416;
+  --line:rgba(120,255,90,.16);
+  --volt:#48FF24; --volt-d:#1FBF0A; --lime:#C6FF3D;
+  --gold:#FFC83D; --gold-d:#D98A0B;
+  --text:#EAF4EC; --muted:#8FA898; --danger:#FF5A5F; --warn:#FFB020;
+  --font-body:'Vazirmatn',Tahoma,system-ui,sans-serif;
+  --font-display:'Lalezar','Vazirmatn',Tahoma,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;color:var(--text);font-family:var(--font-body);line-height:1.85;min-height:100vh;overflow-x:hidden;background:var(--bg)}
+body::before{content:"";position:fixed;inset:0;z-index:-1;
+  background:radial-gradient(60rem 38rem at 90% -8%,rgba(72,255,36,.17),transparent 60%),
+             radial-gradient(46rem 36rem at -12% 42%,rgba(72,255,36,.07),transparent 60%),var(--bg)}
+a{color:inherit}
+h1,h2,h3,p{margin:0}
+:focus-visible{outline:2px solid var(--volt);outline-offset:3px;border-radius:8px}
+.wrap{width:min(1180px,100% - 32px);margin-inline:auto}
+.muted{color:var(--muted)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- header ---------- */
+.hdr{position:sticky;top:0;z-index:50;background:rgba(5,10,6,.74);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.hdr-in{display:flex;align-items:center;justify-content:space-between;padding:10px 0}
+.logo{display:flex;align-items:center;gap:8px;text-decoration:none;font-family:var(--font-display);font-size:28px;line-height:1;direction:ltr}
+.logo .crown{width:26px;height:20px}
+.a{color:var(--volt);text-shadow:0 0 22px rgba(72,255,36,.5)}
+.b{background:linear-gradient(180deg,#fff,#9DB0A3);-webkit-background-clip:text;background-clip:text;color:transparent}
+.burger{display:grid;gap:5px;width:44px;height:44px;place-content:center;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:14px;cursor:pointer}
+.burger span{display:block;width:20px;height:2px;background:var(--text);border-radius:2px;transition:transform .2s,opacity .2s}
+.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.nav{position:absolute;inset:100% 0 auto 0;display:none;flex-direction:column;gap:2px;padding:10px 16px 16px;background:rgba(6,13,8,.97);border-bottom:1px solid var(--line)}
+.nav.open{display:flex}
+.nav a{padding:12px 14px;border-radius:14px;text-decoration:none;font-weight:600;color:var(--muted)}
+.nav a:hover{color:var(--text);background:rgba(72,255,36,.08)}
+@media(min-width:860px){
+  .burger{display:none}
+  .nav{position:static;display:flex;flex-direction:row;padding:0;background:none;border:0;gap:4px}
+  .nav a{padding:8px 14px;font-size:14px}
+}
+
+/* ---------- buttons / inputs ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:0 24px;border-radius:999px;border:0;font:inherit;font-weight:800;cursor:pointer;text-decoration:none;transition:transform .15s,box-shadow .2s,filter .2s}
+.btn-primary{background:linear-gradient(180deg,#6BFF3F,#22C40C);color:#04130A;box-shadow:0 10px 30px -10px rgba(72,255,36,.75),inset 0 1px 0 rgba(255,255,255,.5)}
+.btn-primary:hover{transform:translateY(-1px);filter:brightness(1.07)}
+.btn-ghost{background:rgba(255,255,255,.05);color:var(--text);border:1px solid var(--line)}
+.btn-ghost:hover{background:rgba(255,255,255,.09)}
+.btn-lg{min-height:54px;padding:0 34px;font-size:17px}
+.btn[disabled]{cursor:not-allowed;opacity:.5;transform:none;box-shadow:none;filter:none}
+.spin{display:none;width:18px;height:18px;border-radius:50%;border:2.5px solid rgba(4,19,10,.3);border-top-color:#04130A;animation:rot .7s linear infinite}
+.loading .spin{display:inline-block}
+@keyframes rot{to{transform:rotate(360deg)}}
+.field{margin-bottom:14px}
+.field label{display:block;font-weight:700;font-size:14px;margin-bottom:6px}
+.inp{width:100%;min-height:50px;padding:10px 14px;border-radius:14px;border:1px solid rgba(255,255,255,.13);background:#07110A;color:var(--text);font:inherit;font-size:16px}
+.inp::placeholder{color:#5f7566}
+.inp:focus{border-color:var(--volt);outline:0;box-shadow:0 0 0 3px rgba(72,255,36,.18)}
+.inp.bad{border-color:var(--danger)}
+textarea.inp{min-height:110px;resize:vertical}
+.err{color:#FF8A8E;font-size:13px;min-height:20px;margin-top:6px}
+.hint{color:var(--muted);font-size:13px;margin-top:6px}
+
+/* ---------- hero ---------- */
+.hero{padding:34px 0 18px}
+.hero-grid{display:grid;gap:26px;align-items:center}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.chip{padding:5px 14px;border-radius:999px;font-size:13px;font-weight:700;background:rgba(72,255,36,.09);border:1px solid var(--line);color:#CFF7C8}
+.hero h1{font-family:var(--font-display);font-weight:400;font-size:clamp(60px,18vw,132px);line-height:1;letter-spacing:-.5px;direction:ltr;text-align:right}
+.hero h1 .a{text-shadow:0 0 44px rgba(72,255,36,.5),0 4px 0 #0B6600}
+.lead{font-size:clamp(17px,3.6vw,22px);color:#C9D9CE;margin:16px 0 26px;max-width:34ch}
+.hero-txt>*{animation:rise .7s cubic-bezier(.2,.7,.2,1) both}
+.hero-txt>:nth-child(2){animation-delay:.08s}.hero-txt>:nth-child(3){animation-delay:.16s}.hero-txt>:nth-child(4){animation-delay:.24s}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}}
+.hero-art{position:relative}
+.hero-img{display:block;width:100%;max-width:460px;margin-inline:auto;border-radius:28px;border:1px solid var(--line);box-shadow:0 30px 80px -30px rgba(72,255,36,.5)}
+.scene{position:relative;width:100%;max-width:380px;aspect-ratio:1;margin-inline:auto}
+.glow{position:absolute;inset:8%;border-radius:50%;background:radial-gradient(circle,rgba(72,255,36,.42),rgba(72,255,36,0) 66%)}
+.bolts{position:absolute;inset:0;width:100%;height:100%;filter:drop-shadow(0 0 6px #48FF24) drop-shadow(0 0 16px rgba(72,255,36,.55));animation:flick 3.4s infinite}
+@keyframes flick{0%,44%,56%,100%{opacity:.95}46%{opacity:.25}48%{opacity:1}50%{opacity:.4}52%{opacity:1}}
+.scene .c{position:absolute;display:block;height:auto;aspect-ratio:1}
+.c1{width:62%;top:19%;left:19%;filter:drop-shadow(0 22px 26px rgba(0,0,0,.55)) drop-shadow(0 0 30px rgba(255,200,61,.35));animation:sway 6s ease-in-out infinite alternate}
+.c2{width:21%;top:5%;right:3%;animation:bob 5s ease-in-out infinite}
+.c3{width:15%;bottom:9%;left:5%;animation:bob 6s ease-in-out -2s infinite}
+@keyframes sway{from{transform:rotateY(-24deg) translateY(-6px)}to{transform:rotateY(24deg) translateY(6px)}}
+@keyframes bob{50%{transform:translateY(-10px) rotate(12deg)}}
+.hero-art{perspective:900px}
+@media(min-width:900px){.hero{padding:64px 0 30px}.hero-grid{grid-template-columns:1.1fr .9fr}}
+
+/* ---------- sections ---------- */
+.sec{padding:52px 0 8px}
+.sec-h{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:6px 16px;margin-bottom:22px}
+h2{font-family:var(--font-display);font-weight:400;font-size:clamp(30px,6.5vw,44px);line-height:1.2}
+.sec [id]{scroll-margin-top:84px}
+section[id]{scroll-margin-top:72px}
+
+.svc-grid{display:grid;gap:14px}
+@media(min-width:760px){.svc-grid{grid-template-columns:repeat(3,1fr)}}
+.svc{position:relative;padding:22px;border-radius:24px;background:linear-gradient(160deg,var(--panel2),var(--panel));border:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.svc.is-live{border-color:rgba(72,255,36,.5);box-shadow:0 0 0 1px rgba(72,255,36,.12),0 20px 50px -24px rgba(72,255,36,.55)}
+.svc.is-off .ico{filter:grayscale(1);opacity:.6}
+.svc .ico{font-size:32px;line-height:1}
+.svc h3{font-family:var(--font-display);font-weight:400;font-size:26px}
+.svc p{color:var(--muted);font-size:15px}
+.svc .btn{margin-top:auto;align-self:flex-start}
+.svc-foot{margin-top:auto;padding-top:10px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pill{display:inline-block;padding:2px 12px;border-radius:999px;font-size:12.5px;font-weight:800}
+.pill.in{background:rgba(72,255,36,.14);color:#8CFF6E;border:1px solid rgba(72,255,36,.35)}
+.pill.out{background:rgba(255,90,95,.12);color:#FF9A9D;border:1px solid rgba(255,90,95,.3)}
+
+.packs{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(min-width:760px){.packs{grid-template-columns:repeat(3,1fr);gap:16px}}
+@media(min-width:1040px){.packs{grid-template-columns:repeat(4,1fr)}}
+.pack{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;padding:20px 12px 16px;border-radius:24px;background:linear-gradient(170deg,var(--panel2),var(--panel));border:1px solid var(--line);transition:transform .2s,border-color .2s,box-shadow .2s}
+.pack:hover{transform:translateY(-3px);border-color:rgba(72,255,36,.5);box-shadow:0 18px 40px -22px rgba(72,255,36,.6)}
+.pack .coin-ico{width:58px;height:58px;filter:drop-shadow(0 6px 10px rgba(0,0,0,.5))}
+.pack-name{font-family:var(--font-display);font-weight:400;font-size:42px;line-height:1.1;color:var(--gold);margin-top:4px}
+.pack-amt{color:var(--muted);font-size:14px}
+.pack-price{margin:6px 0 8px;font-size:14px;color:var(--muted)}
+.pack-price b{color:var(--text);font-size:21px;font-weight:800}
+.pack .btn{width:100%;margin-top:10px}
+.pack.is-out{opacity:.62;filter:grayscale(.75)}
+.pack.is-out:hover{transform:none;box-shadow:none;border-color:var(--line)}
+.pack.sk{min-height:250px;border-color:transparent;background:linear-gradient(100deg,var(--panel) 30%,var(--panel2) 50%,var(--panel) 70%);background-size:200% 100%;animation:sh 1.3s linear infinite}
+@keyframes sh{to{background-position:-200% 0}}
+.state{grid-column:1/-1;text-align:center;padding:36px 16px;border:1px dashed var(--line);border-radius:24px;color:var(--muted)}
+.state-ico{font-size:34px;line-height:1;margin-bottom:8px}
+.state h3{font-size:19px;color:var(--text);margin-bottom:4px}
+.state .btn{margin-top:14px}
+
+.rev-grid{display:grid;gap:12px}
+@media(min-width:760px){.rev-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1040px){.rev-grid{grid-template-columns:repeat(3,1fr)}}
+.rev{padding:18px;border-radius:22px;background:linear-gradient(170deg,var(--panel2),var(--panel));border:1px solid var(--line)}
+.rev header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.av{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:linear-gradient(160deg,#6BFF3F,#158B06);color:#04130A;font-weight:900}
+.rev header div{flex:1;min-width:0;line-height:1.4}
+.rev header b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rev time{font-size:12.5px;color:var(--muted)}
+.stars{color:var(--gold);letter-spacing:1px;white-space:nowrap}
+.stars i{font-style:normal;color:#2C3D31}
+.rev p{color:#D3E2D8;font-size:15px;overflow-wrap:anywhere}
+.rev-form{margin-top:26px;padding:20px;border-radius:24px;background:rgba(255,255,255,.03);border:1px solid var(--line);max-width:640px}
+.rev-form h3{font-family:var(--font-display);font-weight:400;font-size:24px;margin-bottom:12px}
+.rate{display:inline-flex;flex-direction:row-reverse;position:relative}
+.rate input{position:absolute;opacity:0;width:1px;height:1px}
+.rate label{cursor:pointer;font-size:32px;line-height:1;color:#2C3D31;padding:0 3px;margin:0}
+.rate input:checked~label,.rate label:hover,.rate label:hover~label{color:var(--gold)}
+.rate input:focus-visible+label{outline:2px solid var(--volt);border-radius:6px}
+.hp{position:absolute;inset-inline-start:-9999px;width:1px;height:1px;opacity:0}
+
+.ftr{margin-top:60px;padding:30px 0 40px;border-top:1px solid var(--line);text-align:center}
+.ftr strong{font-family:var(--font-display);font-weight:400;font-size:26px;display:block}
+.ftr .rb{margin-top:4px;color:var(--muted)}
+.ftr .rb a{color:var(--volt);font-weight:700;text-decoration:none;direction:ltr;unicode-bidi:isolate}
+
+/* ---------- dialog ---------- */
+dialog{border:0;padding:0;background:transparent;color:inherit;width:calc(100% - 24px);max-width:460px;margin:auto;max-height:none;overflow:visible}
+dialog::backdrop{background:rgba(0,0,0,.72);backdrop-filter:blur(4px)}
+dialog[open]{animation:pop .22s ease-out}
+@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.97)}}
+.dlg{position:relative;max-height:calc(100dvh - 24px);overflow:auto;padding:26px 20px 20px;border-radius:28px;background:linear-gradient(170deg,#12281A,#08120B);border:1px solid rgba(72,255,36,.32);box-shadow:0 30px 80px -20px #000,0 0 60px -22px rgba(72,255,36,.5)}
+.dlg h3{font-family:var(--font-display);font-weight:400;font-size:27px;margin-bottom:12px;padding-inline-end:36px}
+.x{position:absolute;top:14px;inset-inline-end:14px;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--text);cursor:pointer;font-size:16px}
+.sum{display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:18px;background:rgba(0,0,0,.3);border:1px solid var(--line);margin-bottom:16px}
+.sum svg{width:48px;height:48px;flex:none}
+.sum b{font-family:var(--font-display);font-weight:400;font-size:30px;color:var(--gold);line-height:1.1;display:block}
+.sum small{color:var(--muted);display:block}
+.sum .pr{margin-inline-start:auto;text-align:end;font-weight:800;line-height:1.4}
+.ok-ico{width:60px;height:60px;border-radius:50%;display:grid;place-items:center;font-size:30px;font-weight:900;background:linear-gradient(180deg,#6BFF3F,#22C40C);color:#04130A;box-shadow:0 0 40px rgba(72,255,36,.55);margin-bottom:12px}
+.kv{margin:0 0 14px;display:grid;gap:0;border-radius:18px;border:1px solid var(--line);overflow:hidden}
+.kv div{display:flex;justify-content:space-between;gap:12px;padding:10px 14px;border-bottom:1px solid var(--line)}
+.kv div:last-child{border-bottom:0}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0;font-weight:800;text-align:end;overflow-wrap:anywhere}
+.card-no{direction:ltr;unicode-bidi:isolate;letter-spacing:1.5px;font-size:18px;color:var(--gold)}
+.note{margin:14px 0;padding:10px 14px;border-radius:14px;background:rgba(255,200,61,.08);border:1px solid rgba(255,200,61,.25);color:#F4E3B0;font-size:14px}
+.dlg .btn{width:100%}
+.dlg .btn+.btn{margin-top:8px}
+
+/* ---------- toasts ---------- */
+#toasts{position:fixed;inset:auto 0 16px 0;width:auto;height:auto;margin:0;padding:0 12px;border:0;background:transparent;overflow:visible;color:inherit;flex-direction:column;align-items:center;gap:8px;pointer-events:none;z-index:300}
+#toasts:popover-open,#toasts.nopop{display:flex}
+.toast{pointer-events:auto;display:flex;align-items:center;gap:10px;width:100%;max-width:440px;padding:12px 14px;border-radius:16px;background:#0E1D13;border:1px solid var(--line);border-inline-start:4px solid var(--volt);box-shadow:0 14px 40px -12px #000;font-size:14.5px;animation:pop .25s ease-out}
+.toast.error{border-inline-start-color:var(--danger)}
+.toast.out{opacity:0;transform:translateY(8px);transition:.25s}
+.ti{flex:none;display:grid;place-items:center;width:24px;height:24px;border-radius:50%;font-weight:900;font-size:13px;background:var(--volt);color:#04130A}
+.toast.error .ti{background:var(--danger);color:#fff}
+
+noscript{display:block;padding:14px;text-align:center;background:#3a1010}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<noscript>برای استفاده از فروشگاه، جاوااسکریپت مرورگر باید فعال باشد.</noscript>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <radialGradient id="gold" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#FFF3B0"/><stop offset=".45" stop-color="#FFC83D"/><stop offset="1" stop-color="#D98A0B"/></radialGradient>
+    <symbol id="coin" viewBox="0 0 64 64">
+      <circle cx="32" cy="32" r="30" fill="url(#gold)"/>
+      <circle cx="32" cy="32" r="30" fill="none" stroke="#FFE58A" stroke-opacity=".7" stroke-width="1.5"/>
+      <circle cx="32" cy="32" r="23.5" fill="none" stroke="#9A5A00" stroke-opacity=".55" stroke-width="2"/>
+      <polygon transform="translate(15 15.5) scale(1.42)" points="12,2.5 14.9,8.7 21.6,9.5 16.6,14.1 18,20.8 12,17.4 6,20.8 7.4,14.1 2.4,9.5 9.1,8.7" fill="#FFF6C2" stroke="#9A5A00" stroke-opacity=".6" stroke-width=".8"/>
+    </symbol>
+    <symbol id="crown" viewBox="0 0 32 24"><path d="M3 21 L1 6 L9 12 L16 2 L23 12 L31 6 L29 21 Z" fill="#C6FF3D" stroke="#0A3D00" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+  </defs>
+</svg>
+
+<header class="hdr">
+  <div class="wrap hdr-in">
+    <a class="logo" href="#home" aria-label="صفحه اصلی">
+      <svg class="crown" aria-hidden="true"><use href="#crown"/></svg>
+      <span id="logoText"><span class="a">Arian</span> <span class="b">Shop</span></span>
+    </a>
+    <button id="burger" class="burger" type="button" aria-label="باز کردن منو" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
+    <nav id="nav" class="nav" aria-label="منوی اصلی">
+      <a href="#home">خانه</a>
+      <a href="#shop">فروش سکه</a>
+      <a href="#ads">تبلیغات</a>
+      <a href="#edit">ادیت Arian</a>
+      <a href="#reviews">نظرات کاربران</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section id="home" class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-txt">
+        <div class="chips">
+          <span class="chip">🛡️ خرید مطمئن</span>
+          <span class="chip">⚡ واریز زیر ۵ دقیقه</span>
+          <span class="chip">سایت تخصصی</span>
+        </div>
+        <h1 id="heroTitle"><span class="a">Arian</span> <span class="b">Shop</span></h1>
+        <p id="heroSub" class="lead">فروش سکه و خدمات با مدیریت سریع و آسان</p>
+        <div><a class="btn btn-primary btn-lg" href="#shop">مشاهده فروشگاه</a></div>
+      </div>
+      <div class="hero-art" id="heroArt" aria-hidden="true">
+        <div class="scene">
+          <div class="glow"></div>
+          <svg class="bolts" viewBox="0 0 400 400"><g fill="none" stroke="#48FF24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M70 30 L118 118 L92 124 L150 214"/><path d="M338 58 L298 140 L324 146 L268 232"/><path d="M84 336 L140 284 L124 278 L188 222"/><path d="M330 350 L292 300 L310 296 L262 246"/></g></svg>
+          <svg class="c c1" viewBox="0 0 64 64"><use href="#coin"/></svg>
+          <svg class="c c2" viewBox="0 0 64 64"><use href="#coin"/></svg>
+          <svg class="c c3" viewBox="0 0 64 64"><use href="#coin"/></svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services" class="sec">
+    <div class="wrap">
+      <div class="sec-h"><h2>خدمات</h2></div>
+      <div class="svc-grid">
+        <article class="svc is-live" id="svc-coin">
+          <div class="ico">🪙</div>
+          <h3>فروش سکه</h3>
+          <p>خرید سکه با بسته‌های مختلف</p>
+          <a class="btn btn-primary" href="#shop">مشاهده بسته‌ها</a>
+        </article>
+        <article class="svc is-off" id="ads">
+          <div class="ico">📢</div>
+          <h3>تبلیغات</h3>
+          <p data-desc>فعلاً در دسترس نیست</p>
+          <div class="svc-foot"><span class="pill out" data-pill>غیرفعال</span><span data-act></span></div>
+        </article>
+        <article class="svc is-off" id="edit">
+          <div class="ico">🎨</div>
+          <h3>ادیت Arian</h3>
+          <p data-desc>فعلاً در دسترس نیست</p>
+          <div class="svc-foot"><span class="pill out" data-pill>غیرفعال</span><span data-act></span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="shop" class="sec">
+    <div class="wrap">
+      <div class="sec-h"><h2>فروش سکه</h2><p class="muted">بسته را انتخاب کنید، شناسه کاربری را وارد کنید و سفارش را ثبت کنید.</p></div>
+      <div id="packs" class="packs" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section id="reviews" class="sec">
+    <div class="wrap">
+      <div class="sec-h"><h2>نظرات کاربران</h2></div>
+      <div id="revList" class="rev-grid" aria-live="polite"></div>
+
+      <form id="revForm" class="rev-form" novalidate>
+        <h3>نظر خودتان را بنویسید</h3>
+        <div class="field">
+          <label for="rvName">نام</label>
+          <input id="rvName" class="inp" maxlength="40" autocomplete="nickname" placeholder="مثلاً علی">
+        </div>
+        <div class="field">
+          <span id="rateLbl" style="display:block;font-weight:700;font-size:14px;margin-bottom:6px">امتیاز</span>
+          <div class="rate" role="radiogroup" aria-labelledby="rateLbl">
+            <input type="radio" name="rate" id="r5" value="5"><label for="r5" title="۵ ستاره">★</label>
+            <input type="radio" name="rate" id="r4" value="4"><label for="r4" title="۴ ستاره">★</label>
+            <input type="radio" name="rate" id="r3" value="3"><label for="r3" title="۳ ستاره">★</label>
+            <input type="radio" name="rate" id="r2" value="2"><label for="r2" title="۲ ستاره">★</label>
+            <input type="radio" name="rate" id="r1" value="1"><label for="r1" title="۱ ستاره">★</label>
+          </div>
+        </div>
+        <div class="field">
+          <label for="rvText">متن نظر</label>
+          <textarea id="rvText" class="inp" maxlength="500" placeholder="تجربه‌ی خرید خود را بنویسید"></textarea>
+        </div>
+        <input class="hp" id="rvHp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <p class="err" id="rvErr" role="alert"></p>
+        <button class="btn btn-primary" id="rvBtn" type="submit"><span class="spin"></span><span class="lbl">ارسال نظر</span></button>
+        <p class="hint">نظر شما بعد از تأیید مدیریت نمایش داده می‌شود.</p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="ftr">
+  <div class="wrap">
+    <strong id="ftrText">مدیریت Arian</strong>
+    <div class="rb" id="ftrRb" hidden>روبیکا: <a id="ftrRbLink" href="#" target="_blank" rel="noopener noreferrer"></a></div>
+  </div>
+</footer>
+
+<dialog id="dlg" aria-labelledby="dlgTitle"><div class="dlg" id="dlgBody"></div></dialog>
+<div id="toasts" popover="manual" aria-live="polite"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+'use strict';
+
+/* ================= config ================= */
+const SUPABASE_URL = 'https://mdmuxyaqgbnnpebksnxx.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_MpjiU3hl6iwbxmyGWcz4sQ_58bnf2y6'; // کلید عمومی (publishable)؛ Secret Key هرگز اینجا نباشد
+
+const DEF = {
+  site_name:'Arian Shop', hero_title:'Arian Shop',
+  hero_subtitle:'فروش سکه و خدمات با مدیریت سریع و آسان',
+  footer_text:'مدیریت Arian', rubika_id:'', hero_image_url:'',
+  ads_enabled:'false', edit_enabled:'false'
+};
+
+/* ================= helpers ================= */
+const $  = (s,r=document)=>r.querySelector(s);
+const $$ = (s,r=document)=>Array.from(r.querySelectorAll(s));
+const esc = s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const nf = new Intl.NumberFormat('fa-IR');
+const fmt = n=>nf.format(Number(n)||0);
+const dfmt = new Intl.DateTimeFormat('fa-IR',{year:'numeric',month:'long',day:'numeric'});
+const fdate = v=>{const d=new Date(v);return isNaN(d)?'':dfmt.format(d)};
+const norm = v=>String(v||'').replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d));
+const isNet = e=>/failed to fetch|networkerror|network request|abort|load failed|timeout|no_lib/i.test(String((e&&(e.message||e))||''));
+function wordmark(name){
+  const parts=String(name||'').trim().split(/\s+/); const first=parts.shift()||'';
+  return '<span class="a">'+esc(first)+'</span>'+(parts.length?' <span class="b">'+esc(parts.join(' '))+'</span>':'');
+}
+function rubikaLink(id){
+  const c=String(id||'').trim().replace(/^@/,'');
+  return /^[A-Za-z0-9_.]{3,64}$/.test(c)?'https://rubika.ir/'+c:'';
+}
+function copyText(t){
+  if(navigator.clipboard&&window.isSecureContext){return navigator.clipboard.writeText(t)}
+  return new Promise((res,rej)=>{
+    const ta=document.createElement('textarea');ta.value=t;ta.style.cssText='position:fixed;opacity:0';document.body.appendChild(ta);ta.select();
+    try{document.execCommand('copy')?res():rej()}catch(e){rej(e)}ta.remove();
+  });
+}
+
+/* ================= toast ================= */
+const tbox=$('#toasts'); const hasPop=typeof tbox.showPopover==='function';
+if(!hasPop){tbox.removeAttribute('popover');tbox.classList.add('nopop')}
+function raise(){ if(!hasPop) return; try{ if(tbox.matches(':popover-open')) tbox.hidePopover(); tbox.showPopover(); }catch(e){} }
+function toast(msg,type,ms){
+  type=type||'info';
+  const el=document.createElement('div'); el.className='toast '+type;
+  el.setAttribute('role',type==='error'?'alert':'status');
+  el.innerHTML='<span class="ti">'+({success:'✓',error:'!',info:'i'}[type]||'i')+'</span><span>'+esc(msg)+'</span>';
+  tbox.appendChild(el); raise();
+  setTimeout(()=>{el.classList.add('out');setTimeout(()=>{el.remove();if(!tbox.children.length&&hasPop){try{tbox.hidePopover()}catch(e){}}},260)},ms||3800);
+}
+
+/* ================= supabase ================= */
+function timeoutFetch(url,opts){
+  opts=opts||{}; const c=new AbortController(); const t=setTimeout(()=>c.abort(),15000);
+  if(opts.signal){opts.signal.addEventListener('abort',()=>c.abort())}
+  return fetch(url,Object.assign({},opts,{signal:c.signal})).finally(()=>clearTimeout(t));
+}
+let sb=null;
+try{
+  if(!window.supabase||!window.supabase.createClient) throw new Error('no_lib');
+  sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{
+    auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false},
+    global:{fetch:timeoutFetch}
+  });
+}catch(e){sb=null}
+
+const state={products:[],productsErr:null,settings:{},reviews:[],reviewsErr:null,sel:null,busy:false,heroUrl:null,lastLoad:0};
+
+/* ================= state boxes ================= */
+function stateBox(ico,title,text,retry){
+  return '<div class="state"><div class="state-ico">'+ico+'</div><h3>'+esc(title)+'</h3><p>'+esc(text)+'</p>'+
+    (retry?'<button class="btn btn-ghost" type="button" data-retry="'+retry+'">تلاش دوباره</button>':'')+'</div>';
+}
+const NET_MSG='اتصال به سرور برقرار نشد. اینترنت یا VPN خود را بررسی کنید.';
+
+/* ================= settings ================= */
+const g=k=>{const v=state.settings[k];return (v!==undefined&&v!==null&&v!=='')?v:DEF[k]};
+function applySettings(){
+  const name=g('site_name');
+  document.title=name+' | فروش سکه و خدمات';
+  $('#logoText').innerHTML=wordmark(name);
+  $('#heroTitle').innerHTML=wordmark(g('hero_title'));
+  $('#heroSub').textContent=g('hero_subtitle');
+  $('#ftrText').textContent=g('footer_text');
+  const rid=String(g('rubika_id')||'').trim(), rb=$('#ftrRb'), a=$('#ftrRbLink');
+  if(rid){
+    rb.hidden=false; a.textContent='@'+rid.replace(/^@/,'');
+    const l=rubikaLink(rid); if(l){a.href=l}else{a.removeAttribute('href')}
+  }else{rb.hidden=true}
+  applyHeroImage(g('hero_image_url'));
+  renderServices();
+}
+function applyHeroImage(url){
+  url=String(url||''); if(state.heroUrl===url) return; state.heroUrl=url;
+  const art=$('#heroArt'), scene=$('.scene',art), old=$('.hero-img',art);
+  if(old) old.remove(); scene.hidden=false;
+  if(!/^https:\/\//i.test(url)) return;
+  const img=new Image(); img.className='hero-img'; img.alt=''; img.referrerPolicy='no-referrer';
+  img.onload=()=>{scene.hidden=true;art.appendChild(img)}; img.src=url;
+}
+function renderServices(){
+  const rl=rubikaLink(g('rubika_id'));
+  [['ads','ads_enabled','برای ثبت سفارش تبلیغات در روبیکا به مدیریت پیام دهید.'],
+   ['edit','edit_enabled','برای ثبت سفارش ادیت در روبیکا به مدیریت پیام دهید.']].forEach(([id,key,onText])=>{
+    const on=String(state.settings[key]).toLowerCase()==='true', el=$('#'+id);
+    el.classList.toggle('is-live',on); el.classList.toggle('is-off',!on);
+    $('[data-desc]',el).textContent=on?onText:'فعلاً در دسترس نیست';
+    const pill=$('[data-pill]',el); pill.className='pill '+(on?'in':'out'); pill.textContent=on?'فعال':'غیرفعال';
+    $('[data-act]',el).innerHTML=(on&&rl)?'<a class="btn btn-primary" style="min-height:40px;padding:0 18px" href="'+esc(rl)+'" target="_blank" rel="noopener noreferrer">پیام در روبیکا</a>':'';
+  });
+}
+async function loadSettings(){
+  if(!sb){applySettings();return}
+  try{
+    const {data,error}=await sb.from('settings').select('key,value');
+    if(error) throw error;
+    const m={}; (data||[]).forEach(r=>{m[r.key]=r.value}); state.settings=m;
+  }catch(e){ if(!Object.keys(state.settings).length) toast(isNet(e)?NET_MSG:'بارگذاری تنظیمات انجام نشد.','error') }
+  applySettings();
+}
+
+/* ================= products ================= */
+function packHtml(p){
+  const ok=!!p.is_available;
+  return '<article class="pack'+(ok?'':' is-out')+'">'+
+    '<svg class="coin-ico" viewBox="0 0 64 64" aria-hidden="true"><use href="#coin"/></svg>'+
+    '<h3 class="pack-name">'+esc(p.name)+'</h3>'+
+    '<p class="pack-amt">'+fmt(p.coin_amount)+' سکه</p>'+
+    '<p class="pack-price"><b>'+fmt(p.price)+'</b> تومان</p>'+
+    '<span class="pill '+(ok?'in':'out')+'">'+(ok?'موجود':'ناموجود')+'</span>'+
+    '<button class="btn '+(ok?'btn-primary':'btn-ghost')+'" type="button" data-buy="'+esc(p.id)+'"'+(ok?'':' disabled aria-disabled="true"')+'>'+(ok?'خرید':'ناموجود')+'</button>'+
+  '</article>';
+}
+function renderProducts(){
+  const box=$('#packs');
+  if(state.productsErr){
+    box.innerHTML=stateBox('📡',isNet(state.productsErr)?'اتصال برقرار نشد':'خطا در دریافت محصولات',isNet(state.productsErr)?NET_MSG:'دریافت لیست محصولات با مشکل روبه‌رو شد.','products'); return;
+  }
+  if(!state.products.length){box.innerHTML=stateBox('🪙','فعلاً محصولی موجود نیست','به‌زودی بسته‌های جدید اضافه می‌شوند.');return}
+  box.innerHTML=state.products.map(packHtml).join('');
+}
+function skeletons(){ $('#packs').innerHTML='<div class="pack sk"></div>'.repeat(4) }
+async function loadProducts(showSk){
+  if(showSk) skeletons();
+  if(!sb){state.productsErr=new Error('no_lib');renderProducts();return}
+  try{
+    const {data,error}=await sb.from('products').select('id,name,coin_amount,price,is_available').order('coin_amount',{ascending:true});
+    if(error) throw error; state.products=data||[]; state.productsErr=null;
+  }catch(e){ state.productsErr=e }
+  renderProducts();
+}
+
+/* ================= order dialog ================= */
+const dlg=$('#dlg'), dlgBody=$('#dlgBody');
+function closeDlg(){ if(state.busy) return; dlg.close() }
+function summary(p){
+  return '<div class="sum"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#coin"/></svg><div><b>'+esc(p.name)+'</b><small>'+fmt(p.coin_amount)+' سکه</small></div><div class="pr">'+fmt(p.price)+'<small>تومان</small></div></div>';
+}
+function renderForm(errText){
+  const p=state.sel; let last=''; try{last=localStorage.getItem('arian_uid')||''}catch(e){}
+  dlgBody.innerHTML=
+    '<button class="x" type="button" data-close aria-label="بستن">✕</button>'+
+    '<h3 id="dlgTitle">ثبت سفارش</h3>'+ summary(p)+
+    '<form id="orderForm" novalidate>'+
+      '<div class="field"><label for="uid">شناسه کاربر</label>'+
+      '<input id="uid" class="inp" dir="ltr" maxlength="40" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="ID بازی خود را وارد کنید" value="'+esc(last)+'" aria-describedby="uidErr">'+
+      '<p class="err" id="uidErr" role="alert">'+esc(errText||'')+'</p>'+
+      '<p class="hint">سکه روی همین شناسه شارژ می‌شود؛ آن را با دقت وارد کنید.</p></div>'+
+      '<button class="btn btn-primary" id="submitBtn" type="submit"><span class="spin"></span><span class="lbl">ثبت سفارش</span></button>'+
+    '</form>';
+  if(errText) $('#uid').classList.add('bad');
+}
+function openOrder(id){
+  const p=state.products.find(x=>x.id===id);
+  if(!p) return;
+  if(!p.is_available){toast('این محصول در حال حاضر ناموجود است.','error');return}
+  state.sel=p; renderForm(); dlg.showModal();
+  setTimeout(()=>{const u=$('#uid');if(u)u.focus()},60);
+}
+function validUid(v){
+  if(v.length<3) return 'شناسه کاربر باید حداقل ۳ کاراکتر باشد.';
+  if(v.length>40) return 'شناسه کاربر نباید بیشتر از ۴۰ کاراکتر باشد.';
+  if(/[\s<>"'`]/.test(v)) return 'شناسه نباید شامل فاصله یا نویسه‌های خاص باشد.';
+  return '';
+}
+function orderError(e){
+  const m=String((e&&e.message)||e||'');
+  if(isNet(e)) return NET_MSG;
+  if(/INVALID_USER_ID/.test(m)) return 'شناسه کاربر معتبر نیست.';
+  if(/PRODUCT_UNAVAILABLE/.test(m)) return 'این محصول همین حالا ناموجود شده است.';
+  if(/PRODUCT_NOT_FOUND/.test(m)) return 'این محصول دیگر وجود ندارد.';
+  if(/PRICE_CHANGED/.test(m)) return 'PRICE_CHANGED';
+  if(/DUPLICATE_RECENT/.test(m)) return 'سفارش مشابهی همین چند لحظه پیش برای این شناسه ثبت شده است. اگر آن را ندیدید، با مدیریت در تماس باشید.';
+  if(/TOO_MANY_PENDING/.test(m)) return 'برای این شناسه چند سفارش در انتظار پرداخت دارید. ابتدا آن‌ها را نهایی کنید یا با مدیریت تماس بگیرید.';
+  if(/create_order|schema cache|does not exist/i.test(m)) return 'سرور هنوز راه‌اندازی نشده است. با مدیریت تماس بگیرید.';
+  return 'ثبت سفارش انجام نشد. دوباره تلاش کنید.';
+}
+async function submitOrder(ev){
+  ev.preventDefault();
+  if(state.busy) return;
+  const inp=$('#uid'), err=$('#uidErr'), btn=$('#submitBtn'), p=state.sel;
+  const uid=norm(inp.value).trim(); inp.value=uid;
+  const bad=validUid(uid);
+  inp.classList.toggle('bad',!!bad); err.textContent=bad;
+  if(bad){inp.focus();return}
+  if(!sb){err.textContent=NET_MSG;return}
+  state.busy=true; btn.disabled=true; btn.classList.add('loading'); $('.lbl',btn).textContent='در حال ثبت سفارش…';
+  try{
+    const {data,error}=await sb.rpc('create_order',{p_user_id:uid,p_product_id:p.id,p_expected_price:p.price});
+    if(error) throw error;
+    try{localStorage.setItem('arian_uid',uid)}catch(e){}
+    state.busy=false; renderSuccess(data); toast('سفارش شما ثبت شد.','success'); loadProducts(false);
+  }catch(e){
+    state.busy=false;
+    const msg=orderError(e);
+    if(msg==='PRICE_CHANGED'){
+      await loadProducts(false);
+      const np=state.products.find(x=>x.id===p.id);
+      if(np&&np.is_available){state.sel=np;renderForm('قیمت این محصول تغییر کرده است. مبلغ جدید را بررسی و دوباره ثبت کنید.')}
+      else{renderForm('این محصول دیگر در دسترس نیست.')}
+      return;
+    }
+    if(/ناموجود|دیگر وجود/.test(msg)) loadProducts(false);
+    const b=$('#submitBtn'); if(b){b.disabled=false;b.classList.remove('loading');$('.lbl',b).textContent='ثبت سفارش'}
+    const er=$('#uidErr'); if(er) er.textContent=msg; toast(msg,'error',5000);
+  }
+}
+function renderSuccess(o){
+  const card=String(o.card_number||'').replace(/\s+/g,'');
+  const shown=card.replace(/(\d{4})(?=\d)/g,'$1 ');
+  dlgBody.innerHTML=
+    '<button class="x" type="button" data-close aria-label="بستن">✕</button>'+
+    '<div class="ok-ico" aria-hidden="true">✓</div>'+
+    '<h3 id="dlgTitle">سفارش شما با موفقیت ثبت شد ✅</h3>'+
+    '<dl class="kv">'+
+      '<div><dt>شماره سفارش</dt><dd>#'+fmt(o.order_number)+'</dd></div>'+
+      '<div><dt>شناسه کاربر</dt><dd dir="ltr">'+esc(o.user_id)+'</dd></div>'+
+      '<div><dt>مقدار سکه</dt><dd>'+fmt(o.coin_amount)+'</dd></div>'+
+      '<div><dt>مبلغ</dt><dd>'+fmt(o.price)+' تومان</dd></div>'+
+      '<div><dt>شماره کارت</dt><dd class="card-no">'+(shown?esc(shown):'—')+'</dd></div>'+
+    '</dl>'+
+    (card?'<button class="btn btn-primary" type="button" data-copy="'+esc(card)+'">کپی شماره کارت</button>':
+      '<p class="note">شماره کارت هنوز ثبت نشده است. لطفاً با مدیریت در روبیکا تماس بگیرید.</p>')+
+    '<p class="note">پس از واریز، سفارش توسط مدیریت بررسی و تکمیل می‌شود.</p>'+
+    '<button class="btn btn-ghost" type="button" data-close>بستن</button>';
+}
+
+/* ================= reviews ================= */
+function revHtml(r){
+  const n=Math.max(1,Math.min(5,parseInt(r.rating,10)||5)), name=String(r.display_name||'?').trim();
+  return '<article class="rev"><header><span class="av" aria-hidden="true">'+esc(Array.from(name)[0]||'?')+'</span>'+
+    '<div><b>'+esc(name)+'</b><time datetime="'+esc(r.created_at)+'">'+fdate(r.created_at)+'</time></div>'+
+    '<span class="stars" role="img" aria-label="امتیاز '+n+' از ۵">'+'★'.repeat(n)+'<i>'+'★'.repeat(5-n)+'</i></span></header>'+
+    '<p>'+esc(r.content)+'</p></article>';
+}
+function renderReviews(){
+  const box=$('#revList');
+  if(state.reviewsErr){box.innerHTML=stateBox('📡',isNet(state.reviewsErr)?'اتصال برقرار نشد':'خطا در دریافت نظرات',isNet(state.reviewsErr)?NET_MSG:'دریافت نظرات با مشکل روبه‌رو شد.','reviews');return}
+  if(!state.reviews.length){box.innerHTML=stateBox('💬','هنوز نظری ثبت نشده','اولین نفری باشید که تجربه‌ی خرید خود را می‌نویسد.');return}
+  box.innerHTML=state.reviews.map(revHtml).join('');
+}
+async function loadReviews(){
+  if(!sb){state.reviewsErr=new Error('no_lib');renderReviews();return}
+  try{
+    const {data,error}=await sb.from('reviews').select('id,display_name,content,rating,created_at').eq('is_approved',true).order('created_at',{ascending:false}).limit(30);
+    if(error) throw error; state.reviews=data||[]; state.reviewsErr=null;
+  }catch(e){state.reviewsErr=e}
+  renderReviews();
+}
+async function submitReview(ev){
+  ev.preventDefault();
+  const err=$('#rvErr'), btn=$('#rvBtn');
+  if($('#rvHp').value) return;
+  const name=$('#rvName').value.trim(), text=$('#rvText').value.trim(), rate=($('input[name=rate]:checked')||{}).value;
+  err.textContent='';
+  if(name.length<2||name.length>40){err.textContent='نام باید بین ۲ تا ۴۰ کاراکتر باشد.';$('#rvName').focus();return}
+  if(!rate){err.textContent='لطفاً امتیاز خود را انتخاب کنید.';return}
+  if(text.length<5||text.length>500){err.textContent='متن نظر باید بین ۵ تا ۵۰۰ کاراکتر باشد.';$('#rvText').focus();return}
+  try{ const t=Number(localStorage.getItem('arian_rv_t')||0); if(Date.now()-t<60000){err.textContent='لطفاً یک دقیقه بعد دوباره تلاش کنید.';return} }catch(e){}
+  if(!sb){err.textContent=NET_MSG;return}
+  btn.disabled=true; btn.classList.add('loading'); $('.lbl',btn).textContent='در حال ارسال…';
+  try{
+    const {error}=await sb.from('reviews').insert({display_name:name,content:text,rating:parseInt(rate,10)});
+    if(error) throw error;
+    try{localStorage.setItem('arian_rv_t',String(Date.now()))}catch(e){}
+    $('#revForm').reset(); toast('نظر شما ثبت شد و پس از تأیید مدیریت نمایش داده می‌شود.','success',5000);
+  }catch(e){ const m=isNet(e)?NET_MSG:'ارسال نظر انجام نشد. دوباره تلاش کنید.'; err.textContent=m; toast(m,'error') }
+  finally{btn.disabled=false;btn.classList.remove('loading');$('.lbl',btn).textContent='ارسال نظر'}
+}
+
+/* ================= events ================= */
+const burger=$('#burger'), nav=$('#nav');
+burger.addEventListener('click',()=>{const o=nav.classList.toggle('open');burger.setAttribute('aria-expanded',o);burger.setAttribute('aria-label',o?'بستن منو':'باز کردن منو')});
+nav.addEventListener('click',e=>{if(e.target.closest('a')){nav.classList.remove('open');burger.setAttribute('aria-expanded','false')}});
+
+document.addEventListener('click',e=>{
+  const buy=e.target.closest('[data-buy]'); if(buy){openOrder(buy.dataset.buy);return}
+  const rt=e.target.closest('[data-retry]');
+  if(rt){ const k=rt.dataset.retry; if(k==='products') loadProducts(true); else if(k==='reviews') loadReviews(); return }
+  const cp=e.target.closest('[data-copy]');
+  if(cp){copyText(cp.dataset.copy).then(()=>toast('شماره کارت کپی شد.','success')).catch(()=>toast('کپی انجام نشد؛ شماره را دستی کپی کنید.','error'));return}
+  if(e.target.closest('[data-close]')) closeDlg();
+});
+dlg.addEventListener('click',e=>{if(e.target===dlg) closeDlg()});
+dlg.addEventListener('cancel',e=>{if(state.busy) e.preventDefault()});
+dlg.addEventListener('submit',e=>{if(e.target.id==='orderForm') submitOrder(e)});
+dlg.addEventListener('input',e=>{if(e.target.id==='uid'){e.target.classList.remove('bad');$('#uidErr').textContent=''}});
+$('#revForm').addEventListener('submit',submitReview);
+
+function refreshIfStale(){
+  if(document.hidden||dlg.open||Date.now()-state.lastLoad<30000) return;
+  state.lastLoad=Date.now(); loadProducts(false); loadSettings();
+}
+document.addEventListener('visibilitychange',refreshIfStale);
+setInterval(refreshIfStale,60000);
+
+/* ================= init ================= */
+skeletons(); renderReviews();
+$('#revList').innerHTML='<div class="state"><div class="state-ico">⏳</div><p>در حال بارگذاری نظرات…</p></div>';
+state.lastLoad=Date.now();
+loadSettings(); loadProducts(false); loadReviews();
+})();
+</script>
+</body>
+</html>
